@@ -1,0 +1,5 @@
+*.tgz
+cliquetool
+*.old
+*.orig
+.vscode

@@ -1,0 +1,25 @@
+# Parameters for building dense groups from cliques.
+# Format is space-separated with the first column as the group size.
+# The second column can either be the required group density
+# as a decimal or the required minimum links as a decimal.
+# For example, the following two lines achieve the same result:
+#   10     8
+#   10     0.8
+# Note: For gruops larger than any mentioned in this file, the density
+# (either specified or calculated from a minimum size integer) of the
+# largest specified group will be used.
+    2	  1.000
+    3	  1.000
+    4	  1.000
+    5	  0.800
+    6	  0.666
+    7	  0.713
+    8	   .800
+    9	   .666
+   10	   .600
+   11	   .550
+   12	   .550
+   13	   .500
+   14	   .500
+   15	   .500
+   16	   .500

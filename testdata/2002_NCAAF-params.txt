@@ -1,0 +1,23 @@
+# Parameters for building dense groups from cliques.
+# Format is space-separated with the first column as the group size.
+# The second column can either be the required group density
+# as a decimal or the required minimum links as a decimal.
+# For example, the following two lines achieve the same result:
+#   10     8
+#   10     0.8
+# Note: For gruops larger than any mentioned in this file, the density
+# (either specified or calculated from a minimum size integer) of the
+# largest specified group will be used.
+#
+# For College football, most conferences require each team to play at
+# least 6 other teams in the conference duing a year.
+    3	   2
+    4	   3
+    5	   4
+    6	   5
+    7	   5
+    8	   6
+    9	   6
+   10	   6
+   11	   6
+   12	   6
