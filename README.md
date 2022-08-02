@@ -165,6 +165,7 @@ that were considered but discarded because they did not meet the criteria:
 |                    TOTALS | 124/132  93.94% |      AVE  91.98% |          - |
 ###### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                Indiana PA |   3/12  25.00% |     3/13  23.08% |          0 |
 |             Northern Iowa |   1/12   8.33% |     1/11   9.09% |          1 |
 |         Edinboro Universi |   1/12   8.33% |     1/11   9.09% |          0 |

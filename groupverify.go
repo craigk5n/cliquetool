@@ -528,7 +528,8 @@ func verifyGroupStruct(db *NodeDb, groupDb *GroupDb, group *Group,
 		if reportFormat == ReportFormatMarkdown {
 			ret.reportText += "### Potential group nodes not included\n" +
 				fmt.Sprintf("| %25s | %14s | %16s | %10s |\n", "NodeID", "Group Links",
-					"Grp/Total Lnks", "No. Groups")
+					"Grp/Total Lnks", "No. Groups") +
+				fmt.Sprintf("| %25s | %14s | %16s | %10s |\n", "---", "---:", "---:", "---:")
 		} else {
 			ret.reportText += "<tr><td colspan=\"6\">Potential group nodes not included</td></tr>\n"
 		}

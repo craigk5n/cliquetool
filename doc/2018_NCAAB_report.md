@@ -129,6 +129,7 @@
 |                    TOTALS | 210/210 100.00% |      AVE  49.74% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                 Tennessee |   4/15  26.67% |     4/26  15.38% |          2 |
 |            Michigan State |   4/15  26.67% |     4/28  14.29% |          1 |
 |            UNC Greensboro |   3/15  20.00% |     3/23  13.04% |          1 |
@@ -156,6 +157,7 @@ No related groups
 |                    TOTALS | 182/182 100.00% |      AVE  48.12% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |             Chicago State |   4/14  28.57% |     4/24  16.67% |          1 |
 |         Fairleigh Dickins |   3/14  21.43% |     3/20  15.00% |          1 |
 |                    DePaul |   3/14  21.43% |     3/21  14.29% |          1 |
@@ -183,6 +185,7 @@ No related groups
 |                    TOTALS | 182/182 100.00% |      AVE  51.05% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                   Harvard |   4/14  28.57% |     4/23  17.39% |          1 |
 |                  Bucknell |   4/14  28.57% |     4/23  17.39% |          1 |
 |                Holy Cross |   3/14  21.43% |     3/20  15.00% |          1 |
@@ -209,6 +212,7 @@ No related groups
 |                    TOTALS | 156/156 100.00% |      AVE  45.83% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +                    UTSA |  12/13  92.31% |    12/27  44.44% |          1 |
 |               Chattanooga |   3/13  23.08% |     3/21  14.29% |          1 |
 |             Indiana State |   3/13  23.08% |     3/21  14.29% |          1 |
@@ -235,6 +239,7 @@ No related groups
 |                    TOTALS | 156/156 100.00% |      AVE  49.90% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                 Louisiana |   4/13  30.77% |     4/25  16.00% |          1 |
 |                      UTSA |   4/13  30.77% |     4/27  14.81% |          1 |
 |              Howard Payne |   3/13  23.08% |      3/3 100.00% |          0 |
@@ -261,6 +266,7 @@ No related groups
 |                    TOTALS | 156/156 100.00% |      AVE  45.70% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +        Middle Tennessee |  12/13  92.31% |    12/26  46.15% |          1 |
 |             James Madison |   4/13  30.77% |     4/22  18.18% |          1 |
 |               Chattanooga |   3/13  23.08% |     3/21  14.29% |          1 |
@@ -286,6 +292,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  46.58% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |               New Orleans |   3/12  25.00% |     3/25  12.00% |          1 |
 |              Coppin State |   3/12  25.00% |     3/27  11.11% |          2 |
 |                    Drexel |   2/12  16.67% |     2/22   9.09% |          1 |
@@ -311,6 +318,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  41.20% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +       South Carolina St |  11/12  91.67% |    11/24  45.83% |          1 |
 |                Georgetown |   4/12  33.33% |     4/20  20.00% |          1 |
 |              Grand Canyon |   4/12  33.33% |     4/24  16.67% |          1 |
@@ -336,6 +344,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  47.42% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |             CS Northridge |   4/12  33.33% |     4/21  19.05% |          1 |
 |               Utah Valley |   4/12  33.33% |     4/24  16.67% |          1 |
 |                Pepperdine |   3/12  25.00% |     3/21  14.29% |          1 |
@@ -361,6 +370,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  45.90% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |           Cleveland State |   4/12  33.33% |     4/22  18.18% |          1 |
 |                   Oakland |   3/12  25.00% |     3/21  14.29% |          1 |
 |             Jackson State |   3/12  25.00% |     3/22  13.64% |          1 |
@@ -386,6 +396,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  44.61% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |               Saint Marys |   4/12  33.33% |     4/25  16.00% |          1 |
 |                  UC Davis |   3/12  25.00% |     3/21  14.29% |          1 |
 |           San Diego State |   3/12  25.00% |     3/22  13.64% |          1 |
@@ -411,6 +422,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  40.68% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +                 Georgia |  11/12  91.67% |    11/25  44.00% |          2 |
 | +               Tennessee |  11/12  91.67% |    11/26  42.31% |          2 |
 |             North Florida |   3/12  25.00% |     3/24  12.50% |          0 |
@@ -436,6 +448,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  41.20% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +         Bethune Cookman |  11/12  91.67% |    11/24  45.83% |          1 |
 |                Georgetown |   4/12  33.33% |     4/20  20.00% |          1 |
 |              Grand Canyon |   4/12  33.33% |     4/24  16.67% |          1 |
@@ -461,6 +474,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  41.08% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +              Miss State |  11/12  91.67% |    11/26  42.31% |          2 |
 | +               Texas A&M |  11/12  91.67% |    11/28  39.29% |          2 |
 |                    Temple |   3/12  25.00% |     3/23  13.04% |          1 |
@@ -486,6 +500,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  46.19% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                      Rice |   3/12  25.00% |     3/26  11.54% |          2 |
 |         East Tennessee St |   2/12  16.67% |     2/21   9.52% |          1 |
 |                   Bradley |   2/12  16.67% |     2/22   9.09% |          1 |
@@ -511,6 +526,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  40.83% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +              Miss State |  11/12  91.67% |    11/26  42.31% |          2 |
 | +               Tennessee |  11/12  91.67% |    11/26  42.31% |          2 |
 |                    Temple |   3/12  25.00% |     3/23  13.04% |          1 |
@@ -536,6 +552,7 @@ No related groups
 |                    TOTALS | 132/132 100.00% |      AVE  40.94% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +                 Georgia |  11/12  91.67% |    11/25  44.00% |          2 |
 | +               Texas A&M |  11/12  91.67% |    11/28  39.29% |          2 |
 |             North Florida |   3/12  25.00% |     3/24  12.50% |          0 |
@@ -560,6 +577,7 @@ No related groups
 |                    TOTALS | 110/110 100.00% |      AVE  44.18% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                   Pacific |   4/11  36.36% |     4/21  19.05% |          1 |
 |                    Denver |   3/11  27.27% |     3/21  14.29% |          1 |
 |             Southern Utah |   3/11  27.27% |     3/22  13.64% |          1 |
@@ -584,6 +602,7 @@ No related groups
 |                    TOTALS | 110/110 100.00% |      AVE  45.00% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                   Hofstra |   4/11  36.36% |     4/21  19.05% |          1 |
 |                    Albany |   4/11  36.36% |     4/23  17.39% |          1 |
 |                    Lehigh |   3/11  27.27% |     3/20  15.00% |          1 |
@@ -607,6 +626,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  41.29% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |         Southeast Missour |   3/10  30.00% |     3/23  13.04% |          5 |
 |             Chicago State |   3/10  30.00% |     3/24  12.50% |          1 |
 |                    Nevada |   3/10  30.00% |     3/27  11.11% |          1 |
@@ -630,6 +650,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  38.23% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                     Omaha |   3/10  30.00% |     3/21  14.29% |          1 |
 |                     Tulsa |   3/10  30.00% |     3/22  13.64% |          1 |
 |             Wichita State |   3/10  30.00% |     3/24  12.50% |          1 |
@@ -653,6 +674,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  39.92% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |            San Jose State |   4/10  40.00% |     4/21  19.05% |          1 |
 |            Portland State |   4/10  40.00% |     4/25  16.00% |          1 |
 |              CS Fullerton |   3/10  30.00% |     3/20  15.00% |          1 |
@@ -676,6 +698,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  44.03% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                Binghamton |   3/10  30.00% |     3/20  15.00% |          1 |
 |                  Columbia |   3/10  30.00% |     3/20  15.00% |          1 |
 |                    Marist |   3/10  30.00% |     3/21  14.29% |          1 |
@@ -699,6 +722,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  41.90% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                    Furman |   3/10  30.00% |     3/22  13.64% |          1 |
 |            UNC Greensboro |   3/10  30.00% |     3/23  13.04% |          1 |
 |              Old Dominion |   3/10  30.00% |     3/25  12.00% |          2 |
@@ -722,6 +746,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  40.90% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |          Western Michigan |   4/10  40.00% |     4/23  17.39% |          1 |
 |                    Toledo |   4/10  40.00% |     4/24  16.67% |          1 |
 |         Northern Illinois |   3/10  30.00% |     3/24  12.50% |          1 |
@@ -745,6 +770,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  40.75% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                    Baylor |   3/10  30.00% |     3/24  12.50% |          1 |
 |                      Iowa |   3/10  30.00% |     3/26  11.54% |          1 |
 |                    Oregon |   3/10  30.00% |     3/26  11.54% |          1 |
@@ -768,6 +794,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  41.21% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |          Hiwassee College |   4/10  40.00% |      4/4 100.00% |          0 |
 |             UNC Asheville |   4/10  40.00% |     4/23  17.39% |          1 |
 |                High Point |   3/10  30.00% |     3/20  15.00% |          1 |
@@ -791,6 +818,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  42.31% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +                Hartford |   5/10  50.00% |     5/22  22.73% |          1 |
 |                     Brown |   4/10  40.00% |     4/20  20.00% |          1 |
 |              UMass Lowell |   4/10  40.00% |     4/21  19.05% |          1 |
@@ -814,6 +842,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  40.79% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +            Toccoa Falls |   5/10  50.00% |      5/7  71.43% |          0 |
 |                       VMI |   4/10  40.00% |     4/20  20.00% |          1 |
 |               USC Upstate |   4/10  40.00% |     4/20  20.00% |          0 |
@@ -837,6 +866,7 @@ No related groups
 |                    TOTALS |  90/90 100.00% |      AVE  39.08% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |              Sacred Heart |   2/10  20.00% |     2/20  10.00% |          1 |
 |             Northern Iowa |   2/10  20.00% |     2/21   9.52% |          1 |
 |            Morehead State |   2/10  20.00% |     2/21   9.52% |          5 |
@@ -859,6 +889,7 @@ No related groups
 |                    TOTALS |  72/72 100.00% |      AVE  35.79% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |         Boston University |    4/9  44.44% |     4/20  20.00% |          1 |
 |                 Dartmouth |    4/9  44.44% |     4/20  20.00% |          1 |
 |              LIU Brooklyn |    4/9  44.44% |     4/22  18.18% |          1 |
@@ -881,6 +912,7 @@ No related groups
 |                    TOTALS |  72/72 100.00% |      AVE  35.52% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +          Tennessee Tech |    8/9  88.89% |     8/18  44.44% |          2 |
 | +                    SIUE |    8/9  88.89% |     8/19  42.11% |          3 |
 | +                 Belmont |    8/9  88.89% |     8/20  40.00% |          1 |
@@ -903,6 +935,7 @@ No related groups
 |                    TOTALS |  72/72 100.00% |      AVE  36.00% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +          Tennessee Tech |    8/9  88.89% |     8/18  44.44% |          2 |
 | +         Tennessee State |    8/9  88.89% |     8/18  44.44% |          2 |
 | +        Eastern Kentucky |    8/9  88.89% |     8/24  33.33% |          2 |
@@ -925,6 +958,7 @@ No related groups
 |                    TOTALS |  72/72 100.00% |      AVE  36.49% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +         Tennessee State |    8/9  88.89% |     8/18  44.44% |          2 |
 | +                 Belmont |    8/9  88.89% |     8/20  40.00% |          1 |
 | +        Eastern Kentucky |    8/9  88.89% |     8/24  33.33% |          2 |
@@ -947,6 +981,7 @@ No related groups
 |                    TOTALS |  72/72 100.00% |      AVE  36.83% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |          Sacramento State |    4/9  44.44% |     4/21  19.05% |          1 |
 |                Pepperdine |    4/9  44.44% |     4/21  19.05% |          1 |
 |               Utah Valley |    4/9  44.44% |     4/24  16.67% |          1 |
@@ -969,6 +1004,7 @@ No related groups
 |                    TOTALS |  72/72 100.00% |      AVE  35.52% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +         Tennessee State |    8/9  88.89% |     8/18  44.44% |          2 |
 | +                    SIUE |    8/9  88.89% |     8/19  42.11% |          3 |
 | +                 Belmont |    8/9  88.89% |     8/20  40.00% |          1 |
@@ -991,6 +1027,7 @@ No related groups
 |                    TOTALS |  72/72 100.00% |      AVE  36.49% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 | +          Tennessee Tech |    8/9  88.89% |     8/18  44.44% |          2 |
 | +                 Belmont |    8/9  88.89% |     8/20  40.00% |          1 |
 | +        Eastern Kentucky |    8/9  88.89% |     8/24  33.33% |          2 |
@@ -1012,6 +1049,7 @@ No related groups
 |                    TOTALS |  56/56 100.00% |      AVE  32.73% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                 Lafayette |    3/8  37.50% |     3/20  15.00% |          1 |
 |                  Monmouth |    3/8  37.50% |     3/22  13.64% |          1 |
 |                    Bryant |    3/8  37.50% |     3/22  13.64% |          1 |
@@ -1033,6 +1071,7 @@ No related groups
 |                    TOTALS |  56/56 100.00% |      AVE  30.08% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |                 Grambling |    3/8  37.50% |     3/22  13.64% |          1 |
 |              UC Riverside |    3/8  37.50% |     3/22  13.64% |          1 |
 |               Idaho State |    2/8  25.00% |     2/21   9.52% |          1 |
@@ -1054,6 +1093,7 @@ No related groups
 |                    TOTALS |  56/56 100.00% |      AVE  31.25% |          - | 
 ### Potential group nodes not included
 |                    NodeID |    Group Links |   Grp/Total Lnks | No. Groups |
+|                       --- |           ---: |             ---: |       ---: |
 |            Missouri State |    3/8  37.50% |     3/21  14.29% |          1 |
 |                     Drake |    3/8  37.50% |     3/23  13.04% |          1 |
 |            Mayville State |    2/8  25.00% |      2/2 100.00% |          0 |
