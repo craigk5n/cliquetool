@@ -177,8 +177,12 @@ that were considered but discarded because they did not meet the criteria:
 There is some useful data for finding the max clique in the following data sets:
 - [DIMACS benchmark set](https://iridia.ulb.ac.be/~fmascia/maximum_clique/DIMACS-benchmark)
 
+## To Do
+
+- Add concurrency support to improve performance
+
 ## Background Reading
-- [Graph_theory](https://en.wikipedia.org/wiki/Graph_theory)
+- [Graph Theory](https://en.wikipedia.org/wiki/Graph_theory)
 - [Graph Theory - Fundamentals](https://www.tutorialspoint.com/graph_theory/graph_theory_fundamentals.htm)
 - [Dense Graph](https://en.wikipedia.org/wiki/Dense_graph)
 
