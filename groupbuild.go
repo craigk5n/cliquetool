@@ -50,7 +50,7 @@ func buildGroups(db *NodeDb, origGroups *GroupDb, paramTable GroupParameters, bu
 		now = time.Now()
 		percent = 100.0 * float64(i) / float64(len(origGroups.groups))
 		perc2 = int(math.Floor(percent))
-		if (perc2 != perc || now.UnixMilli() > (lastUpdate.UnixMilli()+5)) && verbose > 0 {
+		if perc != perc2 && now.After(lastUpdate.Add(time.Second*5)) {
 			perc = perc2
 			if now != startTime && now.UnixMilli() > (lastUpdate.UnixMilli()+5000) && verbose > 0 {
 				fmt.Printf("%d%% (%d of %d)", perc, i, len(origGroups.groups))

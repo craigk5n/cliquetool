@@ -3,3 +3,7 @@ cliquetool
 *.old
 *.orig
 .vscode
+*groups.csv
+*cliques.csv
+testdata/CBM_2000_Ascii_Games.txt
+testdata/CF_2002_Ascii_Games.txt

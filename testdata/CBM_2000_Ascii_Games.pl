@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 # Convert the txt file into a CSV input file for cliquetool.
 # Original file downloaded from:
-#   http://www.phys.utk.edu/sorensen/cfr/cfr/Output/2002/CF_2002_Ascii_Games.txt
+#   http://www.phys.utk.edu/sorensen/cfr/cfr/CBM/2000/CBM_2000_Ascii_Games.txt 
 # Usage:
-#   perl CF_2002_Ascii_Games.pl < CF_2002_Ascii_Games.txt > 2002_NCAAF.csv
+#   perl CBM_2000_Ascii_Games.pl < CBM_2000_Ascii_Games.txt > 2000_NCAAB.csv
 
 while ( my $line = <> ) {
   chomp $line;

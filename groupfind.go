@@ -102,8 +102,7 @@ func findGroups(db *NodeDb, minSize int, searchPasses int, verbose int) (*GroupD
 				fmt.Printf("%.2f%% (%d groups)\n", percent, len(groupDb.groups))
 			}
 			// provide update no more than once/sec and at least every 5 secs
-			if (perc2 != perc && now.After(lastUpdate)) ||
-				now.After(lastUpdate.Add(time.Second*5)) && verbose > 0 {
+			if perc != perc2 && now.After(lastUpdate.Add(time.Second*5)) {
 				perc = perc2
 				fmt.Printf("%d%% (%d of %d)", perc, completedNodes, validNodes)
 				// estimate how much time left to finish

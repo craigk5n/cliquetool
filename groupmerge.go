@@ -146,8 +146,7 @@ func mergeGroups(db *NodeDb, origGroups *GroupDb,
 			100.0 * (float64(i) / float64(len(clonedGroups.groups)))
 		perc2 := int(math.Floor(percent))
 		now := time.Now()
-		if (perc2 != perc && now.After(lastUpdate)) ||
-			now.After(lastUpdate.Add(time.Second*5)) && verbose > 0 {
+		if perc != perc2 && now.After(lastUpdate.Add(time.Second*5)) {
 			perc = perc2
 			fmt.Printf("%d%% (%d of %d)", perc, i, len(clonedGroups.groups))
 			// estimate how much time left to finish
