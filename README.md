@@ -38,12 +38,38 @@ A coworker pointed out some of the research around graph theory and
 I realized I reinvented something very similar to what others had
 already done.
 
-This is a
-["branch and bound"](https://www.geeksforgeeks.org/branch-and-bound-algorithm/)
-solution to the Maximum Clique.  It works well for sparsely connected data.
+This is a simple recursive
+solution to the Maximum Clique problem.
+It works well for sparsely connected data.
 It runs pretty fast on some of the included test data, but it will slow to
 a crawl on some of the highly-connected DIMACS data below (like many similar
-algorithms).
+algorithms) because it's worst-case performance is terrible.
+That's no surprise since this is a
+[NP-Hard problem](https://courses.cs.washington.edu/courses/csep521/07wi/prj/jeff_jacki.pdf).
+
+Honestly, much more time was spent on the code for building dense groups than
+finding the cliques.  IMHO, it's a more interesting challenge that's not talked
+about as much, and has its own real-world applications.  In particular, when
+do you decide to merge two groups that have shared nodes?  When there is 50% overlap?
+It often depends on the type of data.  The type of data will require tweaking the
+merge settings and minimum density of a group,
+which is why this program accepts a configuration file to specify those values.
+
+### Pseudocode: Finding Cliques
+Below is the pseudocode for finding all cliques.
+The program is launched with a parameter for the min size of a
+clique N.
+```
+create a database of nodes and links by parsing the input CSV file
+- Foreach node that has at least N links
+  - Create a group of size 2 for each of the links
+    - Recursive function: for this group, for each node that connects
+      to all other nodes in the group, add the node to the group
+      all recursively call the function we are in.
+      Do not attempt to create a new group that would be a subset of
+      an existing group.
+
+```
 
 ## But Why?
 
