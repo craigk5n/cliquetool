@@ -59,6 +59,7 @@ func main() {
 	groupPrefix := "cliquetool"
 	reportFormat := ReportFormatMarkdown
 	reportSortBySize := true
+	numThreads := 1
 
 	// Rather than using the built-in command line parsing, we handle them one at a time here.
 	// This is because the order of the parameters matters.
@@ -79,6 +80,15 @@ func main() {
 			minGroupSize, err = strconv.Atoi(os.Args[i])
 			if err != nil {
 				fatalError("Invalid parameter for -minGroupSize")
+			}
+		} else if arg == "-t" || arg == "-threads" {
+			if i+1 >= len(os.Args) {
+				fatalError("Parameter -threads requres an integer parameter")
+			}
+			i++
+			numThreads, err = strconv.Atoi(os.Args[i])
+			if err != nil {
+				fatalError("Invalid parameter for -threads")
 			}
 		} else if arg == "-prefix" {
 			if i+1 >= len(os.Args) {
@@ -154,7 +164,7 @@ func main() {
 			if len(nodeDb.nodes) == 0 {
 				fatalError("You must load data with -infile or -dimacsinfile before using -find")
 			}
-			groupDb, err = findGroups(&nodeDb, minGroupSize, searchPasses, verboseLevel)
+			groupDb, err = findGroups(&nodeDb, minGroupSize, searchPasses, verboseLevel, numThreads)
 			if err != nil {
 				fatalError(fmt.Sprintf("Error finding groups: %v", err))
 			}
@@ -202,16 +212,18 @@ func main() {
 			groupDb = mergeGroups(&nodeDb, groupDb, mergeOverlapRatio,
 				mergeMaxMissingGroupLinks, &groupParams, minGroupSize, verboseLevel)
 			needWrite = true
+		} else if arg == "-removesubsets" {
+			removeGroupSubsets(groupDb, verboseLevel)
 		} else if arg == "-prune" {
 			// Must have already loaded data with -infile and specified output with -outfile
 			if len(nodeDb.nodes) == 0 {
-				fatalError("You must load node data with -infile before using -build")
+				fatalError("You must load node data with -infile before using -prune")
 			}
 			if groupDb == nil || len(groupDb.groups) == 0 {
-				fatalError("You must load group data with -loadcsv or using -infile and -find before using -build")
+				fatalError("You must load group data with -loadcsv or using -infile and -find before using -prune")
 			}
 			if len(groupParams.params) == 0 {
-				fatalError("You must load a group paramater file with -param before using -build")
+				fatalError("You must load a group paramater file with -param before using -prune")
 			}
 			pruneGroups(&nodeDb, groupDb, &groupParams, minGroupSize, verboseLevel)
 			removeGroupSubsets(groupDb, verboseLevel)

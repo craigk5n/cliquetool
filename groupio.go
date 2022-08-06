@@ -44,8 +44,8 @@ func writeGroupFile(nodeDb *NodeDb, groupDb *GroupDb, path string, minGroupSize 
 					fmt.Println("My node:", group.groupName, nodeID)
 				}
 				f.WriteString(fmt.Sprintf("%s,%s\n", group.groupName, nodeDb.nodes[nodeID].externalName))
-				cnt++
 			}
+			cnt++
 		}
 		if len(group.ids) > largest {
 			largest = len(group.ids)

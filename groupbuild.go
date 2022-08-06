@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"sort"
+	"sync"
 	"time"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 const MaxGroupOverlapThreshold float64 = 0.50 // 50%
@@ -23,18 +25,9 @@ const MaxGroupOverlapThreshold float64 = 0.50 // 50%
 //   pick the largest table.
 func buildGroups(db *NodeDb, origGroups *GroupDb, paramTable GroupParameters, buildFast bool, minSize int, verbose int) *GroupDb {
 	var ret *GroupDb
-	var percent float64
-	var perc = 0
-	var perc2 int
 	var now time.Time
 
 	startTime := time.Now()
-	lastUpdate := time.Now()
-
-	logMessage(fmt.Sprintf("Building groups (fast=%t)...", buildFast))
-	if verbose > 0 {
-		fmt.Printf("Building groups (fast=%t)...\n", buildFast)
-	}
 
 	var groupDb GroupDb
 	ret = &groupDb
@@ -44,33 +37,19 @@ func buildGroups(db *NodeDb, origGroups *GroupDb, paramTable GroupParameters, bu
 	 * Note: this does affect the input groups, but not enough
 	 * that we should create a whole new copy.
 	 */
+	fmt.Printf("Sorting groups.\n")
 	sortGroupDb(origGroups)
 
+	logMessage(fmt.Sprintf("Building groups (fast=%t)...", buildFast))
+	fmt.Printf("Building groups (fast=%t)...\n", buildFast)
+
+	bar := progressbar.Default(int64(len(origGroups.groups)))
 	for i := 0; i < len(origGroups.groups); i++ {
-		now = time.Now()
-		percent = 100.0 * float64(i) / float64(len(origGroups.groups))
-		perc2 = int(math.Floor(percent))
-		if perc != perc2 && now.After(lastUpdate.Add(time.Second*5)) {
-			perc = perc2
-			if now != startTime && now.UnixMilli() > (lastUpdate.UnixMilli()+5000) && verbose > 0 {
-				fmt.Printf("%d%% (%d of %d)", perc, i, len(origGroups.groups))
-				secsSoFar := float64(now.UnixMilli()) - float64(startTime.UnixMilli())
-				totalApprox := (100.0 / percent) * secsSoFar
-				// 1st half is faster... so give more time
-				totalApprox += 1.5 * (totalApprox * (1.0 - (percent / 100.0)))
-				timeLeft := totalApprox - secsSoFar
-				eta := int(timeLeft)
-				etaH := eta / 3600
-				etaM := (eta / 60) % 60
-				etaS := eta % 60
-				if verbose > 0 {
-					fmt.Printf(" %02d:%02d:%02d remaining\n", etaH, etaM, etaS)
-				}
-				lastUpdate = now
-			}
-		}
 		attemptToBuildGroup(db, ret, &origGroups.groups[i], &paramTable, buildFast, minSize)
+		bar.Add(1)
 	}
+	bar.Finish()
+	bar.Close()
 
 	// We may have created subsets if the subset was added prior to
 	// its superset.
@@ -79,17 +58,13 @@ func buildGroups(db *NodeDb, origGroups *GroupDb, paramTable GroupParameters, bu
 	// Sort from largest to smallest
 	sortGroupDb(ret)
 
-	if verbose > 0 {
-		fmt.Printf("%d%% (%d of %d)\n", 100, len(origGroups.groups),
-			len(origGroups.groups))
-		fmt.Printf("Done building groups.\n")
-		now = time.Now()
-		timeToComplete := int(now.UnixMilli() - startTime.UnixMilli())
-		durH := timeToComplete / 3600
-		durM := (timeToComplete / 60) % 60
-		durS := timeToComplete % 60
-		fmt.Printf("Build processing time: %02d:%02d:%02d\n", durH, durM, durS)
-	}
+	fmt.Printf("\nDone building groups.\n")
+	now = time.Now()
+	timeToComplete := int(now.UnixMilli() - startTime.UnixMilli())
+	durH := timeToComplete / 3600
+	durM := (timeToComplete / 60) % 60
+	durS := timeToComplete % 60
+	fmt.Printf("Build processing time: %02d:%02d:%02d\n", durH, durM, durS)
 	logMessage("Build processing complete")
 
 	return ret
@@ -110,7 +85,7 @@ func attemptToBuildGroup(db *NodeDb, groupDb *GroupDb, group *Group, paramTable 
 	// with the "most valueable" group, they will also be added.
 	var tempDb GroupDb
 
-	if !expandGroup(db, &tempDb, group, paramTable, buildFast, minSize) {
+	if !expandGroup(nil, db, &tempDb, group, paramTable, buildFast, minSize) {
 		// We could not add to this group.  So, add it as is.
 		addGroup(db, groupDb, group, true)
 	} else {
@@ -148,8 +123,13 @@ func attemptToBuildGroup(db *NodeDb, groupDb *GroupDb, group *Group, paramTable 
 // We will do a link summary of this group to create an array that is sorted
 // with nodes that links the most often at the start of the array.
 // We will then add the node with the most links to this group.
-func expandGroup(nodeDb *NodeDb, groupDb *GroupDb, group *Group, paramTable *GroupParameters, buildFast bool, minSize int) bool {
+func expandGroup(wg *sync.WaitGroup, nodeDb *NodeDb, groupDb *GroupDb, group *Group, paramTable *GroupParameters, buildFast bool, minSize int) bool {
 	ret := false
+	// We only use the WaitGroup on the toplevel call to expandGroup, not the
+	// recursive calls to it.
+	if wg != nil {
+		defer wg.Done()
+	}
 
 	minLinks := minLinksForGroupSize(paramTable, len(group.ids)+1)
 	logMessage(fmt.Sprintf("Building group %s (size=%d)", group.groupName, len(group.ids)))
@@ -171,7 +151,7 @@ func expandGroup(nodeDb *NodeDb, groupDb *GroupDb, group *Group, paramTable *Gro
 				 */
 			} else {
 				logMessage(fmt.Sprintf("  trying to add node %s", nodeDb.nodes[potentials[i]].externalName))
-				if expandGroup(nodeDb, groupDb, newGroup, paramTable, buildFast, minSize) {
+				if expandGroup(nil, nodeDb, groupDb, newGroup, paramTable, buildFast, minSize) {
 					/* found a larger group, making this a subset, so don't add it */
 				} else {
 					/*
@@ -211,7 +191,7 @@ func sortPotentials(db *NodeDb, group *Group, potentials []int) []int {
 		}
 	}
 
-	/* If the top contender has more links that any other, no sorting to do */
+	// If the top contender has more links than any other, no sorting to do
 	if nTop <= 1 {
 		return potentials
 	}

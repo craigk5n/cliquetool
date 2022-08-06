@@ -179,10 +179,6 @@ func cmpNodeCountLinkCounts(a NodeCount, b NodeCount) bool {
 	}
 }
 
-func cmpNodeCountLinkCountsReverse(a NodeCount, b NodeCount) bool {
-	return !cmpNodeCountLinkCounts(a, b)
-}
-
 // Calcuate the percent overlap between two groups.  This value
 // is between 0.0 and 1.0 and is the number of common nodes divided
 // by the number of nodes in the smaller group.
@@ -207,16 +203,6 @@ func countGroupOverlap(group1 *Group, group2 *Group) int {
 	}
 
 	return overlap
-}
-
-// Is the specified integer in the array of integers?  If so, return the position.
-func indexInArray(ids []int, idToFind int) (found bool, position int) {
-	for i := 0; i < len(ids); i++ {
-		if ids[i] == idToFind {
-			return true, i
-		}
-	}
-	return false, -1
 }
 
 // Count how many nodes are present in both the provided groups.
@@ -346,6 +332,8 @@ func addGroup(nodeDb *NodeDb, groupDb *GroupDb, group *Group, checkForSubset boo
 	if checkForSubset && groupIsSubsetOfExisting(nodeDb, groupDb, group, false) {
 		return false /*  not added */
 	}
+	groupDb.mutex.Lock()
+	defer groupDb.mutex.Unlock()
 	groupDb.groups = append(groupDb.groups, *group)
 	return true
 }
@@ -355,6 +343,8 @@ func addGroup(nodeDb *NodeDb, groupDb *GroupDb, group *Group, checkForSubset boo
 func cloneAndAddToGroup(nodeDb *NodeDb, group *Group, id int) (*Group, error) {
 	var ret Group
 
+	group.mutex.Lock()
+	defer group.mutex.Unlock()
 	/* don't allow adding duplicate ids to a group */
 	if isInArray(group.ids, id) {
 		return nil, fmt.Errorf("cannot add duplicate ID")
@@ -378,6 +368,9 @@ func cloneAndAddToGroup(nodeDb *NodeDb, group *Group, id int) (*Group, error) {
 func cloneAndSubtractFromGroup(nodeDb *NodeDb, group *Group, id int) *Group {
 	var ret Group
 	ret.groupName = generateGroupName()
+
+	group.mutex.Lock()
+	defer group.mutex.Unlock()
 	ret.ids = make([]int, len(group.ids)-1)
 	ret.linkCounts = make([]int, len(group.ids)-1)
 
@@ -386,7 +379,9 @@ func cloneAndSubtractFromGroup(nodeDb *NodeDb, group *Group, id int) *Group {
 		if group.ids[i] == id {
 			/* ignore this node */
 		} else if j < len(ret.ids) {
-			ret.linkCounts[j] = group.linkCounts[i]
+			if j < len(group.linkCounts)-1 {
+				ret.linkCounts[j] = group.linkCounts[i]
+			}
 			ret.ids[j] = group.ids[i]
 			j++
 		} else {
@@ -411,13 +406,24 @@ func cloneGroupDb(groupDb *GroupDb) *GroupDb {
 	var ret GroupDb
 	ret.groups = make([]Group, len(groupDb.groups))
 
+	groupDb.mutex.Lock()
+	defer groupDb.mutex.Unlock()
+
 	for i := 0; i < len(groupDb.groups); i++ {
-		ret.groups[i] = groupDb.groups[i]
+		groupDb.groups[i].mutex.Lock()
+		ret.groups[i] = Group{
+			groupName:       groupDb.groups[i].groupName,
+			totalNodeLinks:  groupDb.groups[i].totalNodeLinks,
+			density:         groupDb.groups[i].density,
+			statsAreCurrent: groupDb.groups[i].statsAreCurrent,
+			status:          groupDb.groups[i].status,
+		}
 		ret.groups[i].ids = make([]int, len(groupDb.groups[i].ids))
 		ret.groups[i].linkCounts = make([]int, len(groupDb.groups[i].linkCounts))
 		copy(ret.groups[i].ids, groupDb.groups[i].ids)
 		copy(ret.groups[i].linkCounts, groupDb.groups[i].linkCounts)
 		ret.groups[i].statsAreCurrent = false
+		groupDb.groups[i].mutex.Unlock()
 	}
 	return &ret
 }
@@ -432,9 +438,11 @@ func addNodeToGroup(nodeDb *NodeDb, group *Group, id int, doSortNodes bool) {
 		return
 	}
 
+	group.mutex.Lock()
 	group.ids = append(group.ids, id)
 	group.linkCounts = append(group.linkCounts, 0)
 	group.statsAreCurrent = false
+	group.mutex.Unlock()
 
 	/* now sort nodes in group */
 	if doSortNodes {
@@ -545,6 +553,7 @@ func groupHasDuplicates(group *Group) bool {
 	return false
 }
 
+// Debugging function
 func checkGroupsForDups(groupDb *GroupDb) {
 	for i := 0; i < len(groupDb.groups); i++ {
 		groupHasDuplicates(&groupDb.groups[i])

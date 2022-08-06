@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"sort"
-	"time"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 const StatusNotMerged int = 0
@@ -125,8 +125,6 @@ func mergeGroups(db *NodeDb, origGroups *GroupDb,
 		logMessage(fmt.Sprintf("  Groups can only have %d missing links",
 			maxMissingGroupLinks))
 	}
-	startTime := time.Now()
-	lastUpdate := time.Now()
 
 	var ret GroupDb
 	/* Make a copy of the original groups so that we do not modify them */
@@ -140,39 +138,21 @@ func mergeGroups(db *NodeDb, origGroups *GroupDb,
 	/* Sort the cloned groups. */
 	sortGroupDb(clonedGroups)
 
-	perc := 0
+	fmt.Printf("Merging groups.\n")
+	bar := progressbar.Default(int64(len(clonedGroups.groups)))
 	for i := 0; i < len(clonedGroups.groups); i++ {
-		percent :=
-			100.0 * (float64(i) / float64(len(clonedGroups.groups)))
-		perc2 := int(math.Floor(percent))
-		now := time.Now()
-		if perc != perc2 && now.After(lastUpdate.Add(time.Second*5)) {
-			perc = perc2
-			fmt.Printf("%d%% (%d of %d)", perc, i, len(clonedGroups.groups))
-			// estimate how much time left to finish
-			secsSoFar := (float64(now.UnixMilli()) - float64(startTime.UnixMilli())) / 1000.0
-			totalApprox := (100.0 / percent) * secsSoFar
-			timeLeft := totalApprox - secsSoFar
-			eta := int32(math.Ceil(timeLeft))
-			etaH := eta / 3600
-			etaM := (eta / 60) % 60
-			etaS := eta % 60
-			fmt.Printf(" %02d:%02d:%02d remaining\n", etaH, etaM, etaS)
-			lastUpdate = now
-		}
 		if clonedGroups.groups[i].status == StatusNotMerged {
 			attemptToMergeGroup(db, &ret, clonedGroups, &clonedGroups.groups[i],
 				mergeOverlapRatio, maxMissingGroupLinks, paramTable)
 		}
 		updateGroupLinkCounts(db, &clonedGroups.groups[i])
+		bar.Add(1)
 	}
+	bar.Finish()
+	bar.Close()
 
-	if verbose > 0 {
-		fmt.Printf("%d%% (%d of %d)\n", 100, len(clonedGroups.groups),
-			len(clonedGroups.groups))
-		fmt.Printf("Done merging groups: %d -> %d groups\n", len(origGroups.groups),
-			len(ret.groups))
-	}
+	fmt.Printf("\nDone merging groups: %d -> %d groups\n", len(origGroups.groups),
+		len(ret.groups))
 
 	// Remove subsets.  Do this before we prune since we may prune off one
 	// node that prevents a group from being a subset.

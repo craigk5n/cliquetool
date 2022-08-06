@@ -72,7 +72,7 @@ func TestExpandGroup(t *testing.T) {
 	// Note: expandGroup does not add nodes to existing groups.
 	// It clones and adds to existing groups with the new node then
 	// we later delete subsets.
-	ret := expandGroup(&nodeDb, &groupDb, group1, &groupParams, false, 5)
+	ret := expandGroup(nil, &nodeDb, &groupDb, group1, &groupParams, false, 5)
 	if !ret {
 		t.Errorf("Expected expandGroup to return true")
 	}

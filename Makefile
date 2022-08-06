@@ -4,7 +4,8 @@
 CLIQUETOOL = ./cliquetool
 
 ALL: doc/2018_NCAAB_report.md \
-	doc/2002_NCAAF_report.md
+	doc/2002_NCAAF_report.md \
+	doc/2000_NCAAB_report.md
 
 # Find all cliques in the 2018 college basketball schedule data.
 # Then create a report on the results in markdown format.
@@ -14,6 +15,15 @@ doc/2018_NCAAB_report.md: CLIQUETOOL testdata/2018_NCAAB.csv
 		-writecsv 2018_NCAAB-cliques.csv
 	$(CLIQUETOOL) -infile testdata/2018_NCAAB.csv \
 		 -loadgroupcsv 2018_NCAAB-cliques.csv -verify doc/2018_NCAAB_report.md
+
+# Find all cliques in the 2000 college basketball schedule data.
+# Then create a report on the results in markdown format.
+doc/2000_NCAAB_report.md: CLIQUETOOL testdata/2000_NCAAB.csv
+	$(CLIQUETOOL) -infile testdata/2000_NCAAB.csv \
+        	-passes 1 -minsize 8 -find -sort -rename\
+		-writecsv 2000_NCAAB-cliques.csv
+	$(CLIQUETOOL) -infile testdata/2000_NCAAB.csv \
+		 -loadgroupcsv 2000_NCAAB-cliques.csv -verify doc/2000_NCAAB_report.md
 
 # Find all cliques in the 2002 college football schedule data.
 # Use that to build a list of dense groups and only consider groups of size 8 or larger.

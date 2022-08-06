@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"sync"
 	"time"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 // DefaultMergeRatioThreshold sets theshold of percent overlapping nodes that force
@@ -28,11 +30,16 @@ type Group struct {
 	statsAreCurrent bool
 	// status (used in merging process)
 	status int
+	// Mutex to protect access during concurrency
+	mutex sync.Mutex
 }
 
 // GroupDb defines the internal database of Group objects
 type GroupDb struct {
+	// Slice of all groups
 	groups []Group
+	// Mutex to protect access during concurrency
+	mutex sync.Mutex
 }
 
 // Find MOST groups of minSize or larger.
@@ -45,21 +52,23 @@ type GroupDb struct {
 // happen when every group member is already a member of at least one
 // other group.  In these cases our subgroup detection may prevent
 // us from finding such a group.
-func findGroups(db *NodeDb, minSize int, searchPasses int, verbose int) (*GroupDb, error) {
+//
+// NOTE: This app was intended to find all the cliques of a certain size
+// or larger.  It may be possible to optimize or improve the odds of
+// finding the max clique if we toss aside every clique smaller than
+// what we know to be the largest clique.  For example, some of the
+// DIMACS data tells us the max clique size.  If we toss aside all
+// smaller groups, it may speed up the process or avoid missing the
+// correct max clique.
+func findGroups(db *NodeDb, minSize int, searchPasses int, verbose int, numThreads int) (*GroupDb, error) {
 	var groupDb GroupDb
-	var percent float64
-	var perc, perc2 int32
-	var validNodes, completedNodes int
-	var now time.Time
+	var validNodes int
 
-	fmt.Printf("Finding complete groups...\n")
+	fmt.Printf("Finding cliques...\n")
 	startTime := time.Now()
-	lastUpdate := time.Now()
 
 	groupDb.groups = []Group{}
 
-	/* since our array may be sparse, count valid nodes so we output */
-	/* an accurate status of percent complete */
 	validNodes = 0
 	for i := 0; i < len(db.nodes); i++ {
 		if len(db.nodes[i].links) > 0 {
@@ -73,8 +82,7 @@ func findGroups(db *NodeDb, minSize int, searchPasses int, verbose int) (*GroupD
 	// start group name at 0
 	resetGroupNameGenerator()
 
-	perc = -1
-	completedNodes = 0
+	bar := progressbar.Default(int64(len(db.nodes)))
 	for i := 0; i < len(db.nodes); i++ {
 		// If this node has at least the minSize number of links, it is possible */
 		// that they are part of a complete/dense group */
@@ -82,49 +90,30 @@ func findGroups(db *NodeDb, minSize int, searchPasses int, verbose int) (*GroupD
 			// Create a group with just two nodes for each of the links that
 			// this node has.  Then, try to expand each of these groups
 			// with our recursive expandGroup function.
-			for j := 0; j < len(db.nodes[i].links); j++ {
-				var group Group
-				group.groupName = generateGroupName()
-				group.ids = []int{db.nodes[i].id, db.nodes[i].links[j]}
-				if !expandGroup(db, &groupDb, &group, nil, true, minSize) {
-					// false means the group could not be expanded, so this is as
-					// large is this group will get.
+			for j := 0; j < len(db.nodes[i].links); j += numThreads {
+				var wg sync.WaitGroup
+				for k := 0; k < numThreads && j+k < len(db.nodes[i].links); k++ {
+					var group Group
+					group.groupName = generateGroupName()
+					group.ids = []int{db.nodes[i].id, db.nodes[i].links[j+k]}
+					wg.Add(1)
+					go expandGroup(&wg, db, &groupDb, &group, nil, true, minSize)
 				}
+				wg.Wait()
 			}
 		}
-		if len(db.nodes[i].links) > 0 {
-			completedNodes++
-			percent =
-				100.0 * (float64(completedNodes) / float64(validNodes))
-			perc2 = int32(math.Floor(percent))
-			now = time.Now()
-			if verbose >= 2 {
-				fmt.Printf("%.2f%% (%d groups)\n", percent, len(groupDb.groups))
-			}
-			// provide update no more than once/sec and at least every 5 secs
-			if perc != perc2 && now.After(lastUpdate.Add(time.Second*5)) {
-				perc = perc2
-				fmt.Printf("%d%% (%d of %d)", perc, completedNodes, validNodes)
-				// estimate how much time left to finish
-				secsSoFar := (float64(now.UnixMilli()) - float64(startTime.UnixMilli())) / 1000.0
-				totalApprox := (100.0 / percent) * secsSoFar
-				timeLeft := totalApprox - secsSoFar
-				eta := int32(math.Ceil(timeLeft))
-				etaH := eta / 3600
-				etaM := (eta / 60) % 60
-				etaS := eta % 60
-				fmt.Printf(" %02d:%02d:%02d remaining\n", etaH, etaM, etaS)
-				lastUpdate = now
-			}
-		}
+		bar.Add(1)
 	}
+	bar.Finish()
+	bar.Close()
 
+	now := time.Now()
 	if now != startTime {
-		timeToComplete := int32((now.UnixMilli() - startTime.UnixMilli()) / 1000.0)
+		timeToComplete := (now.UnixMilli() - startTime.UnixMilli()) / 1000
 		durH := timeToComplete / 3600
 		durM := (timeToComplete / 60) % 60
 		durS := timeToComplete % 60
-		fmt.Printf("Processing time: %02d:%02d:%02d\n", durH, durM, durS)
+		fmt.Printf("\nProcessing time: %02d:%02d:%02d\n", durH, durM, durS)
 	}
 
 	if searchPasses != 1 {
@@ -138,28 +127,29 @@ func findGroups(db *NodeDb, minSize int, searchPasses int, verbose int) (*GroupD
 	sortGroupDb(&groupDb)
 
 	// now, rename them
-	renameGroups(&groupDb, "cliquetoolDense")
+	renameGroups(&groupDb, "clique")
 
 	now = time.Now()
-	if verbose > 0 {
-		timeToComplete := int32((now.UnixMilli() - startTime.UnixMilli()) / 1000.0)
-		durH := timeToComplete / 3600
-		durM := (timeToComplete / 60) % 60
-		durS := timeToComplete % 60
-		fmt.Printf("Total Processing time: %02d:%02d:%02d\n", durH, durM, durS)
-		fmt.Printf("Found %d groups of size %d or larger\n", len(groupDb.groups), minSize)
+	timeToComplete := int32((now.UnixMilli() - startTime.UnixMilli()) / 1000.0)
+	durH := timeToComplete / 3600
+	durM := (timeToComplete / 60) % 60
+	durS := timeToComplete % 60
+	fmt.Printf("Total Processing time: %02d:%02d:%02d\n", durH, durM, durS)
+	fmt.Printf("Found %d cliques of size %d or larger\n", len(groupDb.groups), minSize)
+	if len(groupDb.groups) > 0 {
+		fmt.Printf("Max clique size is %d\n", len(groupDb.groups[0].ids))
 	}
 
 	return &groupDb, nil
 }
 
-// After we have made the first pass at finding dense groups
-// with findGroups, if we are only interested in dense groups,
+// After we have made the first pass at finding cliques
+// with findGroups, if we are only interested in cliques,
 // we can do some further searching.  If we are going to build
-// on these dense groups, this step is probably not needed since
+// on these cliques, this step is probably not needed since
 // you will end up with the same groups without this step.
 //
-// Sometimes the findGroups algorithm will miss some dense groups.
+// Sometimes the findGroups algorithm will miss some cliques.
 // This should only happen when every group member is already a member
 // of at least one other group.  In these cases our subgroup detection
 // may prevent us from finding such a group.
@@ -197,9 +187,8 @@ func findMissingGroups(db *NodeDb, groups *GroupDb,
 // eligible for another pass.
 func searchForMissedGroups(db *NodeDb, groups *GroupDb,
 	minSize int, startPos int, pass int, verbose int) int {
-	fmt.Printf("Searching for missed complete groups...\n")
+	fmt.Printf("Searching for missed cliques (pass %d)...\n", pass)
 	startTime := time.Now()
-	lastUpdate := time.Now()
 
 	startGroupCount := len(groups.groups)
 	nodeGroupCount := make([]int, len(db.nodes))
@@ -237,56 +226,33 @@ func searchForMissedGroups(db *NodeDb, groups *GroupDb,
 			}
 		}
 	}
-	/* now, do the actually rechecking of the groups */
-	if verbose > 0 {
-		fmt.Printf("%d groups to recheck...\n", groupsToCheck)
-	}
-	completedGroups := 0
-	perc := -1
-	for i := startPos; i < startGroupCount && groupsToCheck > 0; i++ {
-		group := &groups.groups[i]
-		if groupsArray[i] > 0 {
-			// this group's memeber all belong to 2 or more groups
-			completedGroups++
-			percent :=
-				100.0 * (float64(completedGroups) / float64(groupsToCheck))
-			perc2 := int(math.Floor(percent))
-			now := time.Now()
-			if verbose >= 2 {
-				fmt.Printf("%.2f%% (%d groups)\n", percent, len(groups.groups))
+	// Now, do the actually rechecking of the groups
+	if groupsToCheck > 0 {
+		fmt.Printf("Rechecking %d groups on pass %d...\n", groupsToCheck, pass)
+		bar := progressbar.Default(int64(startGroupCount))
+		for i := startPos; i < startGroupCount && groupsToCheck > 0; i++ {
+			group := &groups.groups[i]
+			if groupsArray[i] > 0 {
+				// this group's memeber all belong to 2 or more groups
+				recheckGroup(db, groups, group, minSize, verbose)
 			}
-			// provide update no more than once/sec and at least every 5 secs
-			if (perc2 != perc && now.After(lastUpdate)) ||
-				now.After(lastUpdate.Add(time.Second*5)) && verbose > 0 {
-				perc = perc2
-				fmt.Printf("%d%% (%d of %d)", perc, completedGroups, groupsToCheck)
-				// estimate how much time left to finish
-				secsSoFar := (float64(now.UnixMilli()) - float64(startTime.UnixMilli())) / 1000.0
-				totalApprox := (100.0 / percent) * secsSoFar
-				timeLeft := totalApprox - secsSoFar
-				eta := int32(math.Ceil(timeLeft))
-				etaH := eta / 3600
-				etaM := (eta / 60) % 60
-				etaS := eta % 60
-				fmt.Printf(" %02d:%02d:%02d remaining\n", etaH, etaM, etaS)
-				lastUpdate = now
-			}
-			recheckGroup(db, groups, group, minSize, verbose)
+			bar.Add(1)
 		}
-	}
-	now := time.Now()
-	if now != startTime {
-		timeToComplete := int32((now.UnixMilli() - startTime.UnixMilli()) / 1000.0)
-		durH := timeToComplete / 3600
-		durM := (timeToComplete / 60) % 60
-		durS := timeToComplete % 60
-		fmt.Printf("Processing time: %02d:%02d:%02d\n", durH, durM, durS)
+		bar.Finish()
+		now := time.Now()
+		if now != startTime {
+			timeToComplete := int32((now.UnixMilli() - startTime.UnixMilli()) / 1000.0)
+			durH := timeToComplete / 3600
+			durM := (timeToComplete / 60) % 60
+			durS := timeToComplete % 60
+			fmt.Printf("Processing time: %02d:%02d:%02d\n", durH, durM, durS)
+		}
+	} else {
+		fmt.Printf("No groups needed recheck on pass %d.\n", pass)
 	}
 
-	if verbose > 0 {
-		fmt.Printf("Found %d missing groups on pass %d.\n",
-			len(groups.groups)-startGroupCount, pass)
-	}
+	fmt.Printf("Found %d missing groups on pass %d.\n",
+		len(groups.groups)-startGroupCount, pass)
 
 	// return the number of new groups found
 	return (len(groups.groups) - startGroupCount)
@@ -315,7 +281,7 @@ func recheckGroup(db *NodeDb, groups *GroupDb, group *Group, minSize int, verbos
 			group2, _ := cloneAndAddToGroup(db, smallerGroup, idToAdd)
 			//  Make sure we cannot expand further...
 			/* group already found */
-			if !expandGroup(db, groups, group2, nil, true, minSize) {
+			if !expandGroup(nil, db, groups, group2, nil, true, minSize) {
 				/* addGroup will make sure not to add a subset */
 				addGroup(db, groups, group2, true)
 			}
